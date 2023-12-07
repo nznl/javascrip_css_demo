@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vue-slot</title>
+  <link rel="dns-prefetch" href="">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h3>{{ parentLable }}</h3>
+    <h4>////======插槽区域=====/////</h4>
+    <component-slot :slot-label="slotLabel">
+      <template v-slot:default>
+        <div>默认插槽</div>
+      </template>
+      <template #name>
+        <div>具名插槽</div>
+      </template>
+      <template #scope="{ msg }">
+        作用域插槽{{msg}}
+      </template>
+    </component-slot>
+  </div>
+  <script>
+    const { createElementVNode, ref, createApp } = Vue;
+    createApp({
+      setup(props, ctx) {
+        const parentLable = ref('父元素Label');
+        const slotLabel = ref('子组件Label')
+        return {
+          parentLable,
+          slotLabel
+        }
+      }
+    }).component('component-slot', {
+      props: ['slotLabel'],
+      setup(props, { slots }) {
+        const [ slotDefault, slotName, slotScope ] = [slots.default(), slots.name(), slots.scope({ msg: '传递msg' })]; 
+        return () => createElementVNode('div', {
+          style: {
+            color: 'red'
+          }
+        }, [
+          props.slotLabel,
+          ...slotDefault,
+          ...slotName,
+          ...slotScope
+        ])
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
