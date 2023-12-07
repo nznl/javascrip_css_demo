@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模拟vue响应式</title>
+</head>
+<body>
+  <div class="respond-layout">
+    <h4 class="surname"></h4>
+    <h4 class="name"></h4>
+    <h4 class="age"></h4>
+    <br>
+    <br>
+    <input type="text" oninput="p.name = this.value">
+    <br>
+    <br>
+    <input type="date" onchange="p.birth = this.value">
+  </div>
+  <script src="../js/respondHtml.js"></script>
+  <script>
+    const userInfo = {
+      name: '李老栓',
+      birth: '1920-08-08'
+    }
+    const doms = {
+      surnameDom: document.querySelector('.surname'),
+      nameDom: document.querySelector('.name'),
+      ageDom: document.querySelector('.age')
+    } // 提前定义dom,避免以后操作dom造成浏览器重新渲染
+   const p =  observerProxy(userInfo);
+    function showSurname() {
+      doms.surnameDom.textContent = `姓：${p.name.substring(0, 1)}`;
+    }
+
+    function showName() {
+      doms.nameDom.textContent = `名：${p.name.substr(1, 2)}`
+    }
+
+    function showAge() {
+      const age = new Date().getFullYear() - new Date(p.birth).getFullYear();
+      doms.ageDom.textContent = `年龄： ${age}`;
+    }
+    
+    autoRun(showSurname);
+    autoRun(showName);
+    autoRun(showAge);
+
+  </script>
+</body>
+</html>
