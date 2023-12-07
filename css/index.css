@@ -1,0 +1,10 @@
+:root {
+  --width-50: 50px;
+  --height-50: 50px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "PingFang SC", HarmonyOS_Regular, "Helvetica Neue";
+}

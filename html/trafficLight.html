@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交通灯-问询</title>
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/trafficLight.css">
+</head>
+<body>
+  <div class="traffic-light">
+    <div class="light-container">
+      <div class="light green"></div>
+      <div class="light yellow"></div>
+      <div class="light red"></div>
+    </div>
+    <div class="time">90</div>
+  </div>
+
+  <script type="module">
+    import { TrafficLight } from '../js/trafficLight.js';
+
+    const doms = {
+      trafficDom: document.querySelector(".traffic-light"),
+      timeDom: document.querySelector(".time")
+    }
+    const light = new TrafficLight();
+
+    function raf() {
+      requestAnimationFrame(() => {
+        raf();
+        const currentLight = light.getCurrentLight();
+        doms.trafficDom.className = `traffic-light ${currentLight.color}`;
+        doms.timeDom.textContent = currentLight.remain;
+      });
+    }
+    raf();
+  </script>
+</body>
+</html>

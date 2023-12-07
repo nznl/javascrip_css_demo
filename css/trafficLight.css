@@ -1,0 +1,50 @@
+.traffic-light {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+.traffic-light .light-container {
+  display: inline-flex;
+}
+.light {
+  width: var(--width-50, 50px);
+  height: var(--height-50, 50px);
+  border-radius: 50%;
+  background: #eee;
+}
+.light:not(:last-child) {
+  margin-right: 10px;
+}
+.time {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 20px;
+}
+.green .green {
+  background: green;
+  animation: twinkle 1s ease infinite;
+}
+.red .red {
+  background: red;
+  animation: twinkle 1s ease infinite;
+}
+.yellow .yellow {
+  background: yellow;
+  animation: twinkle 1s ease infinite;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
