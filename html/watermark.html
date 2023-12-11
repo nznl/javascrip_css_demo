@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片水印防篡改</title>
+</head>
+<body>
+  <div class="watermark-container">
+    <img src=""data:image/png;base64,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"" alt="">
+  </div>
+  <canvas width="200" height="200" id="canvas"></canvas>
+  <script>
+    function createWater() {
+        const canvas = document.createElement("canvas");
+        // 显示倍率
+        const dpr = window.devicePixelRatio || 1;
+        const fontSize = 14 * dpr;
+        const font = fontSize + "px serif";
+        // 画板对象
+        const ctx = canvas.getContext("2d");
+        // 获取文字的宽度
+        ctx.font = font;
+        const { width } = ctx.measureText("123");
+        const canvasSize = Math.max(100, width) + 20 * dpr;
+        // 设置画板大小
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+ 
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((Math.PI / 180) * -45); // 倒序旋转-45°
+        ctx.fillStyle = "rgba(0,0,0,0.3)";
+        ctx.font = font;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("123", 0, 0);
+        return {
+            base64: canvas.toDataURL(),
+            size: canvasSize,
+            styleSize: canvasSize / dpr,
+        };
+    }
+    console.log(createWater())
+  </script>
+</body>
+</html>

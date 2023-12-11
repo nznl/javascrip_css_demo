@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>modify-height</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .layout-height {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .top {
+      width: 400px;
+      height: 50%;
+      position: relative;
+      border-bottom: thick double #ccc;
+      border-right: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      border-top: 1px solid #ccc;
+      min-height: 100px;
+    }
+    .bottom {
+      margin-top: 20px;
+      width: 400px;
+      height: calc(100% - 50%);
+      min-height: 100px;
+      border-top: thick double #ccc;
+      border-right: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+      min-height: 100px;
+    }
+    .btn {
+      width: 26px;
+      height: 12px;
+      background: #aaa;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-top {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .btn-bottom {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout-height">
+    <div class="top">
+      上部分
+      <div class="btn btn-top"></div>
+    </div>
+    <div class="bottom">
+      下部分
+      <div class="btn btn-bottom"></div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * 获取激活元素以及父级动画元素
+     * 
+     * 
+     * 
+     * 
+    */
+    const doms = {
+      top: document.querySelector('.top'),
+      topBtn: document.querySelector('.btn-top'),
+      bottom: document.querySelector('.bottom'),
+      bottomBtn: document.querySelector('.btn-bottom')
+    }
+    let isCanmoveTop = false;
+    let isCanmoveBottom = false;
+    let beginY = 0;
+
+    doms.topBtn.onmousedown = e => {
+      e.preventDefault && e.preventDefault();
+      isCanmoveTop = true;
+    }
+    document.documentElement.addEventListener('mousemove', (e) => {
+      if (isCanmoveTop) {
+        let animate = () => {
+          requestAnimationFrame(() => {
+            animate();
+            doms.top.style.height = e.clientY + 'px';
+            doms.bottom.style.height = `calc(100% - ${e.clientY}px)`;
+          })
+        }
+        animate();
+      }
+    });
+    document.documentElement.addEventListener('mouseup', () => {
+      isCanmoveTop = false;
+      isCanmoveBottom= false;
+    })
+
+    doms.bottomBtn.onmousedown = e => {
+      e.preventDefault && e.preventDefault();
+      beginY = e.clientY; // 开始点
+      isCanmoveBottom = true;
+    }
+    document.documentElement.addEventListener('mousemove', (e) => {
+      if (isCanmoveBottom) {
+        let animate = () => {
+          requestAnimationFrame(() => {
+            animate();
+            const diff = e.clientY - beginY;
+            if (diff >= 0) {
+              doms.bottom.style.height = doms.bottom.offsetHeight - diff +'px';
+            } else {
+              doms.bottom.style.height = doms.bottom.offsetHeight - diff + 'px';
+            }
+            doms.top.style.height = `calc(100% - ${ doms.bottom.offsetHeight }px)`;
+          })
+        }
+        animate();
+      }
+    });
+    document.documentElement.addEventListener('mouseup', () => {
+      isCanmoveBottom = false;
+      isCanmoveTop = false;
+    })
+  </script>
+</body>
+</html>

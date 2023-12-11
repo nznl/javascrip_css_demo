@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cavans案例</title>
+  <style>
+    #canvas-container {
+      canvas {
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container" draggable="true" style="cursor: pointer; border: 1px solid red;">
+    <canvas></canvas>
+  </div>
+  
+  <script type="module">
+    import CreateCanvas from '../js/canvas.js';
+    const canvas = new CreateCanvas(document.querySelector("#canvas-container"));
+    canvas.rect().then(res => {
+      console.log(res);
+    });
+    canvas.triangulrar();
+    canvas.drawText();
+  </script>
+</body>
+</html>

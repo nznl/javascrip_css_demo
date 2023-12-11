@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>取色器</title>
+  <style>
+    ul li {
+      width: 120px;
+      height: 30px;
+      margin-bottom: 10px;
+    }
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      animation: pass 2s ease infinite;
+      border: 1px solid #eee;
+    }
+    @keyframes pass {
+      from {
+        transform: translate(0) scale(1);
+      }
+      to {
+        transform: translate(200px) scale(2);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dropper-container">
+    <button>取色</button>
+    <ul class="color-container"></ul>
+    <div class="circle"></div>
+  </div>
+
+  <script type="module">
+    const doms = {
+      colorDom: document.querySelector('.color-container')
+    }
+
+    function createColor() {
+      const result = new Set();
+      while(true) {
+        const color = `#${ Math.random().toString(16).substr(2, 6) }`;
+        if (result.size < 6) {
+          result.add(color);
+        } else {
+          return result
+        }
+      }
+    }
+
+    /**
+     * append允许传入NODE和string，没有返回值
+     * appendChild只允许传入NODE，返回节点本身
+    */
+    function creatH() {
+      let fragment = document.createDocumentFragment(); // 文档片段，减少浏览器重新渲染
+      const colorList = createColor();
+      colorList.forEach(color => {
+        const li = document.createElement('li');
+        li.style.cssText = "background:" + color;
+        fragment.append(li);
+      })
+      document.querySelector('ul').appendChild(fragment)
+    }
+    creatH();
+    async function takeColor() {
+      const drop = new EyeDropper();
+      try {
+        const { sRGBHex } = await drop.open();
+        document.querySelector('.circle').style.background = sRGBHex;
+      } catch(error) {
+        throw new Error(error);
+      }
+    }
+    document.querySelector('button').addEventListener('click', takeColor, false); // 冒泡
+  </script>
+</body>
+</html>
